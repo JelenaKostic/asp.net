@@ -142,39 +142,5 @@ namespace TodoApi.Controllers
               IsComplete = todoItem.IsComplete
           };
 
-        public sealed class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
-        {
-            public void OnAuthorization(AuthorizationFilterContext context)
-            {
-                if (context != null)
-                {
-                    // Auth logic
-                }
-            }
-        }
-
-        //public class SessionRequirementFilter : IAuthorizationFilter
-        //{
-        //    private readonly IHttpContextAccessor _httpContextAccessor;
-        //    public SessionRequirementFilter(IHttpContextAccessor httpContextAccessor)
-        //    {
-        //        _httpContextAccessor = httpContextAccessor;
-        //    }
-        //    public void OnAuthorization(AuthorizationFilterContext context)
-        //    {
-        //        if (!_httpContextAccessor.HttpContext!.Request.Headers["X-Session-Id"].Any())
-        //        {
-        //            context.Result = new UnauthorizedObjectResult(string.Empty);
-        //            return;
-        //        }
-        //    }
-        //}
-
-        //public class SessionRequirementAttribute : TypeFilterAttribute
-        //{
-        //    public SessionRequirementAttribute() : base(typeof(SessionRequirementFilter))
-        //    {
-        //    }
-        //}
     }
 }
