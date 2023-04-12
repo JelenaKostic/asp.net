@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 
@@ -21,7 +24,9 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/TodoItems
-        [HttpGet]
+
+        [HttpGet("WithCustomAuthorizeAttribute")]
+        [SessionRequirement]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
             return await _context.TodoItems
@@ -136,5 +141,40 @@ namespace TodoApi.Controllers
               Name = todoItem.Name,
               IsComplete = todoItem.IsComplete
           };
+
+        public sealed class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
+        {
+            public void OnAuthorization(AuthorizationFilterContext context)
+            {
+                if (context != null)
+                {
+                    // Auth logic
+                }
+            }
+        }
+
+        //public class SessionRequirementFilter : IAuthorizationFilter
+        //{
+        //    private readonly IHttpContextAccessor _httpContextAccessor;
+        //    public SessionRequirementFilter(IHttpContextAccessor httpContextAccessor)
+        //    {
+        //        _httpContextAccessor = httpContextAccessor;
+        //    }
+        //    public void OnAuthorization(AuthorizationFilterContext context)
+        //    {
+        //        if (!_httpContextAccessor.HttpContext!.Request.Headers["X-Session-Id"].Any())
+        //        {
+        //            context.Result = new UnauthorizedObjectResult(string.Empty);
+        //            return;
+        //        }
+        //    }
+        //}
+
+        //public class SessionRequirementAttribute : TypeFilterAttribute
+        //{
+        //    public SessionRequirementAttribute() : base(typeof(SessionRequirementFilter))
+        //    {
+        //    }
+        //}
     }
 }
