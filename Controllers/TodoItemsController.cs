@@ -22,13 +22,16 @@ namespace TodoApi.Controllers
         {
             _context = context;
         }
-
+     
         // GET: api/TodoItems
 
         [HttpGet("WithCustomAuthorizeAttribute")]
-        [SessionRequirement]
+        [Authorize]
+        [Authorize("ValuesHeaderPolicy")]
+        //  [SessionRequirement]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
+            
             return await _context.TodoItems
                 .Select(x => ItemToDTO(x))
                 .ToListAsync();
